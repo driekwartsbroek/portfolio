@@ -9,6 +9,7 @@ import Container from "@/components/Container";
 import WindowPanel from "@/components/WindowPanel";
 import LetterboxdLink from "@/components/LetterboxdLink";
 import Script from "next/script";
+import "bootstrap-icons/font/bootstrap-icons.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
