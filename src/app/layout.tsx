@@ -57,7 +57,7 @@ export default function RootLayout({
           </div>
         </ThemeProvider>
         <Script id="show-banner" strategy="afterInteractive">
-          {`...`} // Your existing script content
+          {/* Your existing script content */}
         </Script>
       </body>
     </html>
