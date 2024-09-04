@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add this custom cursor style */
+body {
+  cursor: url('/cursor.svg'), auto;
+}
+
+/* Optional: You can also specify different cursors for different actions */
+a, button, [role="button"] {
+  cursor: url('/cursor.svg'), pointer;
+}
+
+body {
+  @apply min-h-screen bg-background dark:bg-background-dark text-text-primary-light dark:text-text-primary-dark;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a {
+  @apply text-text-primary-light dark:text-text-primary-dark no-underline;
+}
+
+:root {
+  --color-background: theme('colors.background.DEFAULT');
+}
+
+.dark {
+  --color-background: theme('colors.gray.900');
+}
+
+.pointer-events-none {
+  pointer-events: none;
+}
+
+.custom-cursor-area {
+  cursor: url('/cursor.svg'), auto;
+}
+
+body {
+  cursor: auto;
+}
