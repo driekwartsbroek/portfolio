@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  output: 'export',  // Add this line
   images: {
     remotePatterns: [
       {
@@ -14,6 +15,7 @@ const nextConfig = {
         pathname: '/**',
       },
     ],
+    unoptimized: true,  // Add this line for static export
   },
   eslint: {
     ignoreDuringBuilds: true,
