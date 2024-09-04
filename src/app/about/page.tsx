@@ -48,7 +48,7 @@ export default function About() {
             <div className="mb-6">
               <Tooltip content="is this you? &amp;#x1f5b5;">
                 <Image
-                  src="/portfolio/1000_F_26356527_jPF0QNbPhT65KYlYhQhFUFopfzapAidj.jpg"
+                  src="/1000_F_26356527_jPF0QNbPhT65KYlYhQhFUFopfzapAidj.jpg"
                   alt="About Me"
                   width={250}
                   height={400}

@@ -19,13 +19,13 @@ const navigationItems = [
 ];
 
 const profileImages = [
-  "/portfolio/pfp_1.png",
-  "/portfolio/pfp_2.png",
-  "/portfolio/pfp_3.png",
-  "/portfolio/pfp_4.png",
-  "/portfolio/pfp_5.png",
-  "/portfolio/pfp_6.png",
-  "/portfolio/pfp_7.png",
+  "/pfp_1.png",
+  "/pfp_2.png",
+  "/pfp_3.png",
+  "/pfp_4.png",
+  "/pfp_5.png",
+  "/pfp_6.png",
+  "/pfp_7.png",
 ];
 
 export default function Navigation() {

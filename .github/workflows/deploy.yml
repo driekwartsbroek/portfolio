@@ -27,3 +27,4 @@ jobs:
         with:
           personal_token: ${{ secrets.PAT }}
           publish_dir: ./out
+          cname: www.bertselleslagh.com
