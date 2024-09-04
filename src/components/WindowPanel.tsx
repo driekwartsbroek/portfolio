@@ -8,12 +8,14 @@ interface WindowPanelProps {
   children: ReactNode;
   title: string;
   showBackArrow?: boolean;
+  showBreadcrumbs?: boolean; // Add this line
 }
 
 const WindowPanel: React.FC<WindowPanelProps> = ({
   children,
   title,
   showBackArrow = false,
+  showBreadcrumbs = false, // Add this line
 }) => {
   const router = useRouter();
   const [isMinimized, setIsMinimized] = useState(false);

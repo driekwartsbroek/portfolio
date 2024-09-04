@@ -39,7 +39,11 @@ export default function About() {
       className="min-h-screen bg-background dark:bg-background-dark p-10 sm:p-12 md:p-16 flex flex-col relative pt-32"
     >
       <div className="mt-16 flex flex-col items-center">
-        <WindowPanel title="About Me" showBackArrow showBreadcrumbs>
+        <WindowPanel
+          title="About Me"
+          showBackArrow={true}
+          showBreadcrumbs={true}
+        >
           <Container className="mt-8 w-full flex-grow max-w-3xl mx-auto">
             <div className="mb-6">
               <Tooltip content="is this you? &amp;#x1f5b5;">
