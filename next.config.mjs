@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'export',  // Add this line
+  output: 'export',
+  basePath: '/portfolio', // Add this line if your repo is named "portfolio"
   images: {
     remotePatterns: [
       {
