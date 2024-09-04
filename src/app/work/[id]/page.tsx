@@ -1,4 +1,4 @@
-import { workExperiences } from "../page";
+import { workExperiences } from "@/data/workExperiences";
 import WorkDetailClient from "./WorkDetailClient";
 
 export async function generateStaticParams() {
