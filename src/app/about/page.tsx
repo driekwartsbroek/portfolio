@@ -42,7 +42,7 @@ export default function About() {
         <WindowPanel title="About Me" showBackArrow showBreadcrumbs>
           <Container className="mt-8 w-full flex-grow max-w-3xl mx-auto">
             <div className="mb-6">
-              <Tooltip content="is this you? 🫵">
+              <Tooltip content="is this you? &amp;#x1f5b5;">
                 <Image
                   src="/1000_F_26356527_jPF0QNbPhT65KYlYhQhFUFopfzapAidj.jpg"
                   alt="About Me"
@@ -53,14 +53,15 @@ export default function About() {
               </Tooltip>
             </div>
             <h1 className="text-4xl font-bold mb-6 text-text-primary-light dark:text-primary-light">
-              clicks shouldn't cause headaches.
+              clicks shouldn&apos;t cause headaches.
             </h1>
             <p className="text-lg mb-6 text-text-primary-light dark:text-text-primary-dark">
-              i'm a {age}-year-old UX/UI designer based in Brussels Belgium,
-              passionate about making interfaces even my parents could use.
+              I&apos;m a {age}-year-old UX/UI designer based in Brussels
+              Belgium, passionate about making interfaces even my parents could
+              use.
             </p>
             <p className="text-lg mb-6 text-text-primary-light dark:text-text-primary-dark">
-              when I'm not designing, you can find me watching movies.
+              when I&apos;m not designing, you can find me watching movies.
             </p>
             <LetterboxdLink username="bertselleslagh" />
           </Container>

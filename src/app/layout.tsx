@@ -62,26 +62,9 @@ export default function RootLayout({
             <Footer />
           </div>
         </ThemeProvider>
-        <Script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Person",
-              name: "Bert Selleslagh",
-              url: "https://www.bertselleslagh.com",
-              jobTitle: "UX/UI Designer",
-              worksFor: {
-                "@type": "Organization",
-                name: "Freelance",
-              },
-              sameAs: [
-                "https://www.linkedin.com/in/bertselleslagh",
-                "https://twitter.com/bertselleslagh",
-              ],
-            }),
-          }}
-        />
+        <Script id="show-banner" strategy="afterInteractive">
+          {`...`} // Your existing script content
+        </Script>
       </body>
     </html>
   );
