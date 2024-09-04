@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_US",
     url: "https://www.bertselleslagh.com",
-    site_name: "Bert Selleslagh Portfolio",
+    siteName: "Bert Selleslagh Portfolio",
     images: [
       {
         url: "https://www.bertselleslagh.com/og-image.jpg",
