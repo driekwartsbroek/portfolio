@@ -4,7 +4,7 @@ import { Inter } from "next/font/google";
 import Footer from "@/components/Footer";
 import Navigation from "@/components/Navigation";
 import AnimatedLayout from "@/components/AnimatedLayout";
-import { ThemeProvider } from "@/components/ThemeProvider";
+import { ThemeProvider } from "next-themes";
 import Container from "@/components/Container";
 import WindowPanel from "@/components/WindowPanel";
 import LetterboxdLink from "@/components/LetterboxdLink";
@@ -53,7 +53,7 @@ export default function RootLayout({
         <link rel="canonical" href="https://www.bertselleslagh.com" />
       </head>
       <body className={inter.className}>
-        <ThemeProvider attribute="class">
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <div className="flex flex-col h-screen overflow-hidden">
             <Navigation />
             <main className="flex-grow">
