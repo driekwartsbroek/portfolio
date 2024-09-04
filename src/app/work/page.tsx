@@ -8,7 +8,8 @@ import WindowPanel from "@/components/WindowPanel";
 import BackArrow from "@/components/BackArrow";
 import Breadcrumbs from "@/components/Breadcrumbs";
 
-const workExperiences = [
+// Add 'export' here
+export const workExperiences = [
   {
     company: "Solidaris",
     projects: [

@@ -7,6 +7,19 @@ import Container from "@/components/Container";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import BackArrow from "@/components/BackArrow";
 
+// Add this import
+import { workExperiences } from "../page";
+
+// Add this function
+export async function generateStaticParams() {
+  const paths = workExperiences.flatMap((company) =>
+    company.projects.map((project) => ({
+      id: project.id,
+    }))
+  );
+  return paths;
+}
+
 export default function WorkDetail({ params }: { params: { id: string } }) {
   const router = useRouter();
 
