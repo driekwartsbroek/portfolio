@@ -5,9 +5,9 @@ import Footer from "@/components/Footer";
 import Navigation from "@/components/Navigation";
 import AnimatedLayout from "@/components/AnimatedLayout";
 import { ThemeProvider } from "@/components/ThemeProvider";
-import { Container } from "@/components/Container";
-import { WindowPanel } from "@/components/WindowPanel";
-import { LetterboxdLink } from "@/components/LetterboxdLink";
+import Container from "@/components/Container";
+import WindowPanel from "@/components/WindowPanel";
+import LetterboxdLink from "@/components/LetterboxdLink";
 import Script from "next/script";
 
 const inter = Inter({ subsets: ["latin"] });
