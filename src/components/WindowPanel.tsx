@@ -8,18 +8,20 @@ interface WindowPanelProps {
   children: ReactNode;
   title: string;
   showBackArrow?: boolean;
-  showBreadcrumbs?: boolean; // Add this line
+  showBreadcrumbs?: boolean;
+  isMaximized?: boolean;
 }
 
 const WindowPanel: React.FC<WindowPanelProps> = ({
   children,
   title,
   showBackArrow = false,
-  showBreadcrumbs = false, // Add this line
+  showBreadcrumbs = false,
+  isMaximized = false,
 }) => {
   const router = useRouter();
   const [isMinimized, setIsMinimized] = useState(false);
-  const [isMaximized, setIsMaximized] = useState(false);
+  const [isMaximizedState, setIsMaximizedState] = useState(isMaximized);
   const [isExiting, setIsExiting] = useState(false);
 
   const handleClose = () => {
@@ -29,13 +31,13 @@ const WindowPanel: React.FC<WindowPanelProps> = ({
 
   const handleMinimize = () => {
     setIsMinimized(!isMinimized);
-    if (isMaximized) {
-      setIsMaximized(false);
+    if (isMaximizedState) {
+      setIsMaximizedState(false);
     }
   };
 
   const handleMaximize = () => {
-    setIsMaximized(!isMaximized);
+    setIsMaximizedState(!isMaximizedState);
     if (isMinimized) {
       setIsMinimized(false);
     }
@@ -45,26 +47,17 @@ const WindowPanel: React.FC<WindowPanelProps> = ({
     initial: { opacity: 0, scale: 0.8, y: 20 },
     animate: (custom: { isMaximized: boolean; isMinimized: boolean }) => ({
       opacity: 1,
-      scale: custom.isMaximized ? 0.9 : custom.isMinimized ? 0.8 : 0.8,
+      scale: custom.isMaximized ? 0.95 : custom.isMinimized ? 0.8 : 0.9,
       y: 0,
       height: custom.isMinimized ? "40px" : "auto",
+      width: custom.isMinimized ? "256px" : "auto", // 256px corresponds to w-64
       transition: {
         type: "spring",
         stiffness: 300,
         damping: 20,
       },
     }),
-    exit: (custom: { isMaximized: boolean; isMinimized: boolean }) => ({
-      opacity: 0,
-      scale: 0.8,
-      y: 20,
-      height: custom.isMinimized ? "40px" : "auto",
-      transition: {
-        type: "spring",
-        stiffness: 300,
-        damping: 20,
-      },
-    }),
+    exit: { opacity: 0, scale: 0.8, y: 20 },
   };
 
   return (
@@ -75,9 +68,13 @@ const WindowPanel: React.FC<WindowPanelProps> = ({
           initial="initial"
           animate="animate"
           exit="exit"
-          custom={{ isMaximized, isMinimized }}
+          custom={{ isMaximized: isMaximizedState, isMinimized }}
           className={`bg-gray-200 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg ${
-            isMaximized ? "fixed inset-5 m-0" : "w-full max-w-7xl m-4"
+            isMaximizedState
+              ? "fixed inset-10 m-0"
+              : isMinimized
+              ? "fixed top-0 left-1/2 transform -translate-x-1/2 w-64"
+              : "w-full max-w-7xl mx-auto"
           }`}
         >
           <div className="flex items-center justify-between p-2 bg-gray-300 dark:bg-gray-700">
@@ -103,7 +100,7 @@ const WindowPanel: React.FC<WindowPanelProps> = ({
           {!isMinimized && (
             <div
               className={`p-6 ${
-                isMaximized ? "h-[calc(100vh-60px)] overflow-auto" : ""
+                isMaximizedState ? "h-[calc(100vh-60px)] overflow-auto" : ""
               } relative`}
             >
               <div className="flex items-center mb-4">
@@ -112,7 +109,7 @@ const WindowPanel: React.FC<WindowPanelProps> = ({
                     <BackArrow onClose={handleClose} />
                   </div>
                 )}
-                <Breadcrumbs />
+                {showBreadcrumbs && <Breadcrumbs />}
               </div>
               {children}
             </div>

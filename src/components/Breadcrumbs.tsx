@@ -6,7 +6,7 @@ const Breadcrumbs = () => {
   const pathSegments = pathname.split("/").filter((segment) => segment !== "");
 
   return (
-    <nav className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4 pl-8">
+    <nav className="text-sm font-medium text-gray-500 dark:text-gray-400 mb-4 pl-1 pt-4">
       {" "}
       {/* Added pl-5 for 20px left padding */}
       <ol className="list-none p-0 inline-flex">

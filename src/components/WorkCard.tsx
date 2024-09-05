@@ -9,13 +9,15 @@ interface WorkCardProps {
   description: string;
   imageUrl: string;
   index: number;
+  duration: string; // Add this new prop for the work duration
+  location: string; // Add this new prop for the work location
 }
 
 const cardVariants = {
-  hidden: { y: 50, opacity: 0 },
+  hidden: { opacity: 0, x: -50 },
   visible: {
-    y: 0,
     opacity: 1,
+    x: 0,
     transition: {
       type: "spring",
       stiffness: 300,
@@ -30,6 +32,8 @@ const WorkCard: React.FC<WorkCardProps> = ({
   description,
   imageUrl,
   index,
+  duration,
+  location,
 }) => {
   const router = useRouter();
 
@@ -42,21 +46,35 @@ const WorkCard: React.FC<WorkCardProps> = ({
       variants={cardVariants}
       initial="hidden"
       animate="visible"
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+      whileHover={{ scale: 1.01, backgroundColor: "rgba(0, 0, 0, 0.05)" }}
+      whileTap={{ scale: 0.99 }}
       onClick={handleClick}
-      className="bg-white dark:bg-gray-800 border border-stroke rounded-lg overflow-hidden cursor-pointer shadow-md"
+      className="p-4 cursor-pointer transition-colors duration-150 ease-in-out rounded-lg"
     >
-      <div className="relative h-40 w-full">
-        <Image src={imageUrl} alt={title} layout="fill" objectFit="cover" />
-      </div>
-      <div className="p-4">
-        <h3 className="text-lg font-semibold text-text dark:text-gray-200 mb-2">
-          {title}
-        </h3>
-        <p className="text-sm text-text-secondary dark:text-gray-400">
-          {description}
-        </p>
+      <div className="flex items-center space-x-6">
+        <div className="flex-shrink-0 w-8 h-8 relative">
+          <Image
+            src={imageUrl}
+            alt={title}
+            layout="fill"
+            objectFit="cover"
+            className="rounded-md"
+          />
+        </div>
+        <div className="flex-grow flex items-center space-x-6 text-base">
+          <span className="font-semibold text-gray-800 dark:text-gray-200 w-1/4 truncate">
+            {title}
+          </span>
+          <span className="text-gray-600 dark:text-gray-400 w-1/4 truncate">
+            {description}
+          </span>
+          <span className="text-gray-500 dark:text-gray-400 w-1/4 truncate">
+            {duration}
+          </span>
+          <span className="text-gray-500 dark:text-gray-400 w-1/4 truncate">
+            {location}
+          </span>
+        </div>
       </div>
     </motion.div>
   );
