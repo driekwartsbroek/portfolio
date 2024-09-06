@@ -1,5 +1,6 @@
-import React from "react";
-import { motion } from "framer-motion";
+import React, { useState, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import SecretSubmenu from "./SecretSubmenu";
 
 interface DesktopShortcutsProps {
   onPortfolioClick: () => void;
@@ -8,6 +9,13 @@ interface DesktopShortcutsProps {
 const DesktopShortcuts: React.FC<DesktopShortcutsProps> = ({
   onPortfolioClick,
 }) => {
+  const [isSecretMenuOpen, setIsSecretMenuOpen] = useState(false);
+  const secretShortcutRef = useRef<HTMLDivElement>(null);
+
+  const toggleSecretMenu = () => {
+    setIsSecretMenuOpen(!isSecretMenuOpen);
+  };
+
   return (
     <div className="fixed inset-0 flex items-center justify-center z-30">
       <motion.div
@@ -35,9 +43,11 @@ const DesktopShortcuts: React.FC<DesktopShortcutsProps> = ({
         animate={{ opacity: 1, scale: 1 }}
         transition={{ type: "spring", stiffness: 260, damping: 20, delay: 0.1 }}
         style={{ top: "calc(50% - 7.5px)", left: "calc(50% + 55px)" }}
+        ref={secretShortcutRef}
       >
         <motion.div
-          className="flex flex-col items-center cursor-not-allowed p-2 rounded-lg"
+          className="flex flex-col items-center cursor-pointer p-2 rounded-lg"
+          onClick={toggleSecretMenu}
           whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
           transition={{ duration: 0.2 }}
         >
@@ -46,6 +56,14 @@ const DesktopShortcuts: React.FC<DesktopShortcutsProps> = ({
           </div>
           <span className="text-sm">secret stuff</span>
         </motion.div>
+        <AnimatePresence>
+          {isSecretMenuOpen && (
+            <SecretSubmenu
+              onClose={toggleSecretMenu}
+              parentRef={secretShortcutRef}
+            />
+          )}
+        </AnimatePresence>
       </motion.div>
     </div>
   );

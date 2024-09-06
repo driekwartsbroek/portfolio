@@ -10,6 +10,7 @@ interface WindowPanelProps {
   showBackArrow?: boolean;
   showBreadcrumbs?: boolean;
   isMaximized?: boolean;
+  className?: string; // Add this line
 }
 
 const WindowPanel: React.FC<WindowPanelProps> = ({
@@ -18,10 +19,10 @@ const WindowPanel: React.FC<WindowPanelProps> = ({
   showBackArrow = false,
   showBreadcrumbs = false,
   isMaximized = false,
+  className = "", // Add this line
 }) => {
   const router = useRouter();
-  const [isMinimized, setIsMinimized] = useState(false);
-  const [isMaximizedState, setIsMaximizedState] = useState(isMaximized);
+  const [isSmallVariant, setIsSmallVariant] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
 
   const handleClose = () => {
@@ -30,34 +31,29 @@ const WindowPanel: React.FC<WindowPanelProps> = ({
   };
 
   const handleMinimize = () => {
-    setIsMinimized(!isMinimized);
-    if (isMaximizedState) {
-      setIsMaximizedState(false);
+    if (!isSmallVariant) {
+      setIsSmallVariant(true);
     }
   };
 
   const handleMaximize = () => {
-    setIsMaximizedState(!isMaximizedState);
-    if (isMinimized) {
-      setIsMinimized(false);
+    if (isSmallVariant) {
+      setIsSmallVariant(false);
     }
   };
 
   const windowVariants: Variants = {
-    initial: { opacity: 0, scale: 0.8, y: 20 },
-    animate: (custom: { isMaximized: boolean; isMinimized: boolean }) => ({
+    initial: { opacity: 0, scale: 0.8 },
+    animate: (custom: { isSmallVariant: boolean }) => ({
       opacity: 1,
-      scale: custom.isMaximized ? 0.95 : custom.isMinimized ? 0.8 : 0.9,
-      y: 0,
-      height: custom.isMinimized ? "40px" : "auto",
-      width: custom.isMinimized ? "256px" : "auto", // 256px corresponds to w-64
+      scale: custom.isSmallVariant ? 0.7 : 0.9,
       transition: {
         type: "spring",
         stiffness: 300,
         damping: 20,
       },
     }),
-    exit: { opacity: 0, scale: 0.8, y: 20 },
+    exit: { opacity: 0, scale: 0.8 },
   };
 
   return (
@@ -68,14 +64,10 @@ const WindowPanel: React.FC<WindowPanelProps> = ({
           initial="initial"
           animate="animate"
           exit="exit"
-          custom={{ isMaximized: isMaximizedState, isMinimized }}
+          custom={{ isSmallVariant }}
           className={`bg-gray-200 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg ${
-            isMaximizedState
-              ? "fixed inset-10 m-0"
-              : isMinimized
-              ? "fixed top-0 left-1/2 transform -translate-x-1/2 w-64"
-              : "w-full max-w-7xl mx-auto"
-          }`}
+            isSmallVariant ? "w-4/5 max-h-[80vh]" : "w-[90%] max-h-[90vh]"
+          } ${className} relative`} // Add 'relative' here
         >
           <div className="flex items-center justify-between p-2 bg-gray-300 dark:bg-gray-700">
             <div className="flex items-center space-x-2">
@@ -84,11 +76,19 @@ const WindowPanel: React.FC<WindowPanelProps> = ({
                 onClick={handleClose}
               ></div>
               <div
-                className="w-3 h-3 rounded-full bg-yellow-500 cursor-pointer"
+                className={`w-3 h-3 rounded-full ${
+                  isSmallVariant
+                    ? "bg-yellow-500 opacity-50 cursor-not-allowed"
+                    : "bg-yellow-500 cursor-pointer"
+                }`}
                 onClick={handleMinimize}
               ></div>
               <div
-                className="w-3 h-3 rounded-full bg-green-500 cursor-pointer"
+                className={`w-3 h-3 rounded-full ${
+                  isSmallVariant
+                    ? "bg-green-500 cursor-pointer"
+                    : "bg-green-500 opacity-50 cursor-not-allowed"
+                }`}
                 onClick={handleMaximize}
               ></div>
             </div>
@@ -97,23 +97,21 @@ const WindowPanel: React.FC<WindowPanelProps> = ({
             </div>
             <div className="w-3 h-3"></div>
           </div>
-          {!isMinimized && (
-            <div
-              className={`p-6 ${
-                isMaximizedState ? "h-[calc(100vh-60px)] overflow-auto" : ""
-              } relative`}
-            >
-              <div className="flex items-center mb-4">
-                {showBackArrow && (
-                  <div className="mr-2">
-                    <BackArrow onClose={handleClose} />
-                  </div>
-                )}
-                {showBreadcrumbs && <Breadcrumbs />}
-              </div>
-              {children}
+          <div
+            className={`p-6 overflow-auto ${
+              !isSmallVariant ? "h-[calc(100vh-40px)]" : "h-full"
+            } relative`}
+          >
+            <div className="flex items-center mb-4">
+              {showBackArrow && (
+                <div className="mr-2">
+                  <BackArrow onClose={handleClose} />
+                </div>
+              )}
+              {showBreadcrumbs && <Breadcrumbs />}
             </div>
-          )}
+            {children}
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

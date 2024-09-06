@@ -40,3 +40,30 @@ a {
 body {
   cursor: auto;
 }
+
+.secret-submenu {
+  clip-path: polygon(
+    0% 12px, 
+    calc(50% - 12px) 12px, 
+    50% 0%, 
+    calc(50% + 12px) 12px, 
+    100% 12px, 
+    100% 100%, 
+    0% 100%
+  );
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
+}
+
+.secret-submenu::before {
+  content: '';
+  position: absolute;
+  top: -11px;
+  left: 50%;
+  width: 24px;
+  height: 24px;
+  background: inherit;
+  transform: translateX(-50%) rotate(45deg);
+  border-top-left-radius: 4px;
+  z-index: -1;
+}
