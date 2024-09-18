@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import Container from "@/components/Container";
 import Breadcrumbs from "@/components/Breadcrumbs";
 import BackArrow from "@/components/BackArrow";
+import { workExperiences } from "@/data/workExperiences";
+import { Project } from "@/data/workExperiences";
 
 export default function WorkDetailClient({
   params,
@@ -19,8 +21,23 @@ export default function WorkDetailClient({
   };
 
   useEffect(() => {
-    // Fetch work details using params.id
-    // Update state with fetched data
+    const project = workExperiences
+      .flatMap((company) => company.projects)
+      .find((project) => project.id === params.id) as Project | undefined;
+
+    if (project) {
+      const detailedProject: Project = {
+        ...project,
+        responsibilities: project.responsibilities || [],
+        technologies: project.technologies || [],
+      };
+
+      // Update the open projects in the parent component
+      window.postMessage(
+        { type: "UPDATE_OPEN_PROJECTS", project: detailedProject },
+        "*"
+      );
+    }
   }, [params.id]);
 
   return (

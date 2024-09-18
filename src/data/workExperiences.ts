@@ -1,4 +1,22 @@
-export const workExperiences = [
+export interface Project {
+  id: string;
+  title: string;
+  description: string;
+  imageUrl: string;
+  duration: string;
+  location: string;
+  responsibilities?: string[];
+  technologies?: string[];
+}
+
+interface WorkExperience {
+  company: string;
+  subtitle: string;
+  functionTitle: string;
+  projects: Project[];
+}
+
+export const workExperiences: WorkExperience[] = [
   {
     company: "Solidaris",
     subtitle: "Health Insurance and Social Services",

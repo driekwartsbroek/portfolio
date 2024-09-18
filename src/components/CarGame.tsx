@@ -41,6 +41,76 @@ const CarGame: React.FC<CarGameProps> = ({ onClose }) => {
 
   const [isEnginePlaying, setIsEnginePlaying] = useState(false);
 
+  const updateTrail = useCallback(
+    (x: number, y: number) => {
+      const carWidth = 60;
+      const carHeight = 100;
+      const wheelOffsetX = carWidth * 0.5;
+      const baseWheelOffsetY = carHeight * 0.1;
+      const radians = (rotation * Math.PI) / 180;
+      const cosR = Math.cos(radians);
+      const sinR = Math.sin(radians);
+
+      const wheelOffsetY = baseWheelOffsetY + Math.abs(sinR) * carHeight * 0.4;
+
+      const trailOffsetX = 30;
+      const trailOffsetY = 50;
+
+      const wheelPositions = [
+        // Front left
+        {
+          x: x - wheelOffsetX * cosR - wheelOffsetY * sinR + trailOffsetX,
+          y: y - wheelOffsetX * sinR + wheelOffsetY * cosR + trailOffsetY,
+        },
+        // Front right
+        {
+          x: x + wheelOffsetX * cosR - wheelOffsetY * sinR + trailOffsetX,
+          y: y + wheelOffsetX * sinR + wheelOffsetY * cosR + trailOffsetY,
+        },
+        // Rear left
+        {
+          x: x - wheelOffsetX * cosR + wheelOffsetY * sinR + trailOffsetX,
+          y: y - wheelOffsetX * sinR - wheelOffsetY * cosR + trailOffsetY,
+        },
+        // Rear right
+        {
+          x: x + wheelOffsetX * cosR + wheelOffsetY * sinR + trailOffsetX,
+          y: y + wheelOffsetX * sinR - wheelOffsetY * cosR + trailOffsetY,
+        },
+      ];
+
+      const newTrails = trailRefs.current.map((trail, index) => {
+        const newTrail = trail
+          .map((point) => ({ ...point, opacity: point.opacity - 0.02 }))
+          .filter((point) => point.opacity > 0);
+
+        if (newTrail.length > 0) {
+          const lastPoint = newTrail[0];
+          const newPoint = wheelPositions[index];
+          const controlPoint = {
+            x: lastPoint.x + (newPoint.x - lastPoint.x) * 0.5,
+            y: lastPoint.y + (newPoint.y - lastPoint.y) * 0.5,
+          };
+
+          newTrail.unshift({
+            ...newPoint,
+            opacity: 1,
+            controlPoint,
+            lastPoint: { x: lastPoint.x, y: lastPoint.y },
+          });
+        } else {
+          newTrail.unshift({ ...wheelPositions[index], opacity: 1 });
+        }
+
+        return newTrail.slice(0, 50);
+      });
+
+      trailRefs.current = newTrails;
+      setTrails(newTrails);
+    },
+    [rotation]
+  );
+
   useEffect(() => {
     const centerX = window.innerWidth / 2 - 30;
     const centerY = window.innerHeight / 2 - 50;
@@ -121,74 +191,7 @@ const CarGame: React.FC<CarGameProps> = ({ onClose }) => {
       unsubscribeX();
       unsubscribeY();
     };
-  }, [springX, springY]);
-
-  const updateTrail = (x: number, y: number) => {
-    const carWidth = 60;
-    const carHeight = 100;
-    const wheelOffsetX = carWidth * 0.5;
-    const baseWheelOffsetY = carHeight * 0.1;
-    const radians = (rotation * Math.PI) / 180;
-    const cosR = Math.cos(radians);
-    const sinR = Math.sin(radians);
-
-    const wheelOffsetY = baseWheelOffsetY + Math.abs(sinR) * carHeight * 0.4;
-
-    const trailOffsetX = 30;
-    const trailOffsetY = 60;
-
-    const wheelPositions = [
-      // Front left
-      {
-        x: x - wheelOffsetX * cosR - wheelOffsetY * sinR + trailOffsetX,
-        y: y - wheelOffsetX * sinR + wheelOffsetY * cosR + trailOffsetY,
-      },
-      // Front right
-      {
-        x: x + wheelOffsetX * cosR - wheelOffsetY * sinR + trailOffsetX,
-        y: y + wheelOffsetX * sinR + wheelOffsetY * cosR + trailOffsetY,
-      },
-      // Rear left
-      {
-        x: x - wheelOffsetX * cosR + wheelOffsetY * sinR + trailOffsetX,
-        y: y - wheelOffsetX * sinR - wheelOffsetY * cosR + trailOffsetY,
-      },
-      // Rear right
-      {
-        x: x + wheelOffsetX * cosR + wheelOffsetY * sinR + trailOffsetX,
-        y: y + wheelOffsetX * sinR - wheelOffsetY * cosR + trailOffsetY,
-      },
-    ];
-
-    const newTrails = trailRefs.current.map((trail, index) => {
-      const newTrail = trail
-        .map((point) => ({ ...point, opacity: point.opacity - 0.02 }))
-        .filter((point) => point.opacity > 0);
-
-      if (newTrail.length > 0) {
-        const lastPoint = newTrail[0];
-        const newPoint = wheelPositions[index];
-        const controlPoint = {
-          x: lastPoint.x + (newPoint.x - lastPoint.x) * 0.5,
-          y: lastPoint.y + (newPoint.y - lastPoint.y) * 0.5,
-        };
-
-        newTrail.unshift({
-          ...newPoint,
-          opacity: 1,
-          controlPoint,
-          lastPoint: { x: lastPoint.x, y: lastPoint.y },
-        });
-      } else {
-        newTrail.unshift({ ...wheelPositions[index], opacity: 1 });
-      }
-
-      return newTrail.slice(0, 50);
-    });
-
-    trailRefs.current = newTrails;
-    setTrails(newTrails);
-  };
+  }, [springX, springY, updateTrail]);
 
   return (
     <motion.div

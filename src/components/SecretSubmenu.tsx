@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, RefObject } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -6,12 +6,14 @@ import CarGame from "./CarGame";
 
 interface SecretSubmenuProps {
   onClose: () => void;
-  parentRef: React.RefObject<HTMLDivElement>;
+  parentRef: RefObject<HTMLDivElement>;
+  toggleSecretMenu: () => void;
 }
 
 const SecretSubmenu: React.FC<SecretSubmenuProps> = ({
   onClose,
   parentRef,
+  toggleSecretMenu,
 }) => {
   const router = useRouter();
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });

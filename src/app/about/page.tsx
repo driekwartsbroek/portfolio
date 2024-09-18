@@ -34,7 +34,9 @@ export default function About() {
         title="About Me"
         showBackArrow={true}
         showBreadcrumbs={true}
-        className="max-h-[800px]"
+        className="relative"
+        zIndex={1}
+        onFocus={() => {}}
       >
         <Container className="w-full flex-grow max-w-2xl mx-auto overflow-y-auto">
           <div className="mb-6 flex justify-start">

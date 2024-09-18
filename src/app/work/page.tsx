@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import WorkCard from "@/components/WorkCard";
 import WindowPanel from "@/components/WindowPanel";
 import WorkSidebar from "@/components/WorkSidebar";
@@ -42,6 +42,24 @@ export default function WorkPage() {
     });
   };
 
+  useEffect(() => {
+    const handleMessage = (event: MessageEvent) => {
+      if (event.data.type === "UPDATE_OPEN_PROJECTS") {
+        setOpenProjects((prev) => {
+          if (!prev.some((p) => p.id === event.data.project.id)) {
+            return [...prev, event.data.project];
+          }
+          return prev;
+        });
+      }
+    };
+
+    window.addEventListener("message", handleMessage);
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, []);
+
   return (
     <>
       <WindowPanel
@@ -49,6 +67,8 @@ export default function WorkPage() {
         showBackArrow
         showBreadcrumbs
         isMaximized={true}
+        zIndex={1}
+        onFocus={() => handleWindowFocus("work")}
       >
         <div className="flex flex-col md:flex-row h-full">
           <div className="hidden md:block md:w-64 md:flex-shrink-0">
