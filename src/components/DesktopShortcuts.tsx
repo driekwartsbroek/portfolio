@@ -61,6 +61,7 @@ const DesktopShortcuts: React.FC<DesktopShortcutsProps> = ({
             <SecretSubmenu
               onClose={toggleSecretMenu}
               parentRef={secretShortcutRef}
+              toggleSecretMenu={toggleSecretMenu}
             />
           )}
         </AnimatePresence>

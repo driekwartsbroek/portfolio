@@ -10,7 +10,11 @@ interface WindowPanelProps {
   showBackArrow?: boolean;
   showBreadcrumbs?: boolean;
   isMaximized?: boolean;
-  className?: string; // Add this line
+  className?: string;
+  onClose?: () => void;
+  isDraggable?: boolean;
+  zIndex: number;
+  onFocus: () => void;
 }
 
 const WindowPanel: React.FC<WindowPanelProps> = ({
@@ -19,15 +23,47 @@ const WindowPanel: React.FC<WindowPanelProps> = ({
   showBackArrow = false,
   showBreadcrumbs = false,
   isMaximized = false,
-  className = "", // Add this line
+  className = "",
+  onClose,
+  isDraggable = false,
+  zIndex,
+  onFocus,
 }) => {
   const router = useRouter();
   const [isSmallVariant, setIsSmallVariant] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
+  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
 
   const handleClose = () => {
-    setIsExiting(true);
-    setTimeout(() => router.push("/"), 500);
+    if (onClose) {
+      onClose();
+    } else {
+      setIsExiting(true);
+      setTimeout(() => router.push("/"), 500);
+    }
+  };
+
+  const handleDragStart = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isDraggable) {
+      setIsDragging(true);
+      setDragStart({ x: e.clientX - position.x, y: e.clientY - position.y });
+      onFocus();
+    }
+  };
+
+  const handleDragEnd = () => {
+    setIsDragging(false);
+  };
+
+  const handleDrag = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (isDragging && isDraggable) {
+      setPosition({
+        x: e.clientX - dragStart.x,
+        y: e.clientY - dragStart.y,
+      });
+    }
   };
 
   const handleMinimize = () => {
@@ -66,10 +102,22 @@ const WindowPanel: React.FC<WindowPanelProps> = ({
           exit="exit"
           custom={{ isSmallVariant }}
           className={`bg-gray-200 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg ${
-            isSmallVariant ? "w-4/5 max-h-[80vh]" : "w-[90%] max-h-[90vh]"
-          } ${className} relative`} // Add 'relative' here
+            isSmallVariant ? "w-4/5 max-h-[80vh]" : "w-full max-h-[90vh]"
+          } ${className} relative`}
+          style={{
+            position: isDraggable ? "fixed" : "relative",
+            left: isDraggable ? `${position.x}px` : "auto",
+            top: isDraggable ? `${position.y}px` : "auto",
+            zIndex: zIndex,
+          }}
         >
-          <div className="flex items-center justify-between p-2 bg-gray-300 dark:bg-gray-700">
+          <div
+            className="flex items-center justify-between p-2 bg-gray-300 dark:bg-gray-700 cursor-move"
+            onMouseDown={handleDragStart}
+            onMouseUp={handleDragEnd}
+            onMouseLeave={handleDragEnd}
+            onMouseMove={handleDrag}
+          >
             <div className="flex items-center space-x-2">
               <div
                 className="w-3 h-3 rounded-full bg-red-500 cursor-pointer"
@@ -98,7 +146,7 @@ const WindowPanel: React.FC<WindowPanelProps> = ({
             <div className="w-3 h-3"></div>
           </div>
           <div
-            className={`p-6 overflow-auto ${
+            className={`p-2 sm:p-4 md:p-6 overflow-auto ${
               !isSmallVariant ? "h-[calc(100vh-40px)]" : "h-full"
             } relative`}
           >

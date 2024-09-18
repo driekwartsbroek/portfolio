@@ -2,18 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import CarGame from "./CarGame";
 
 interface SecretSubmenuProps {
   onClose: () => void;
   parentRef: React.RefObject<HTMLDivElement>;
 }
-
-const secretProjects = [
-  { name: "Project A", icon: "bi-car-front", color: "bg-red-500" },
-  { name: "???", icon: "bi-question", color: "bg-blue-500" },
-  { name: "???", icon: "bi-question", color: "bg-green-500" },
-  { name: "???", icon: "bi-question", color: "bg-yellow-500" },
-];
 
 const SecretSubmenu: React.FC<SecretSubmenuProps> = ({
   onClose,
@@ -22,6 +16,19 @@ const SecretSubmenu: React.FC<SecretSubmenuProps> = ({
   const router = useRouter();
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
   const menuRef = useRef<HTMLDivElement>(null);
+  const [isCarGameActive, setIsCarGameActive] = useState(false);
+
+  const secretProjects = [
+    {
+      name: "Project A",
+      icon: "bi-car-front",
+      color: "bg-red-500",
+      onClick: () => setIsCarGameActive(true),
+    },
+    { name: "Project B", icon: "bi-question", color: "bg-blue-500" },
+    { name: "Project C", icon: "bi-question", color: "bg-green-500" },
+    { name: "Project D", icon: "bi-question", color: "bg-yellow-500" },
+  ];
 
   useEffect(() => {
     if (parentRef.current) {
@@ -70,6 +77,7 @@ const SecretSubmenu: React.FC<SecretSubmenuProps> = ({
             whileHover={index === 0 ? { scale: 1.05 } : {}}
             whileTap={index === 0 ? { scale: 0.95 } : {}}
             style={{ cursor: index === 0 ? "pointer" : "default" }}
+            onClick={index === 0 ? project.onClick : undefined}
           >
             <div
               className={`w-14 h-14 ${project.color} rounded-lg mb-2 flex items-center justify-center`}
@@ -80,6 +88,7 @@ const SecretSubmenu: React.FC<SecretSubmenuProps> = ({
           </motion.div>
         ))}
       </div>
+      {isCarGameActive && <CarGame onClose={() => setIsCarGameActive(false)} />}
     </motion.div>
   );
 };

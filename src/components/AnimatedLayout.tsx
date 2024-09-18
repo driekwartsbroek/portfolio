@@ -8,7 +8,7 @@ export default function AnimatedLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-background dark:bg-background-dark p-10 sm:p-12 md:p-16 flex items-center justify-center overflow-auto">
+    <div className="min-h-screen bg-background dark:bg-background-dark p-4 sm:p-10 md:p-16 flex items-center justify-center overflow-auto">
       <div className="w-full flex items-center justify-center">{children}</div>
     </div>
   );
