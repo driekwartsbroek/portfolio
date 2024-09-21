@@ -36,7 +36,7 @@ export default function About() {
           transition={{ duration: 0.6, ease: "easeOut" }}
           className="w-full flex-grow max-w-3xl mx-auto overflow-y-auto px-6 sm:px-8 lg:px-10 pb-36 rounded-lg"
         >
-          <div className="relative mb-1">
+          <div className="relative mt-6 mb-1">
             <div className="w-full h-64 bg-gray-200 rounded-lg overflow-hidden relative">
               <Image
                 src="/1000_F_26356527_jPF0QNbPhT65KYlYhQhFUFopfzapAidj.jpg"
