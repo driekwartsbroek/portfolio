@@ -66,18 +66,17 @@ export default function WorkPage() {
         title="Work"
         showBackArrow
         showBreadcrumbs
-        isMaximized={true}
         zIndex={1}
         onFocus={() => handleWindowFocus("work")}
       >
-        <div className="flex flex-col md:flex-row h-full">
-          <div className="hidden md:block md:w-64 md:flex-shrink-0">
+        <div className="flex flex-col md:flex-row h-full overflow-hidden">
+          <div className="hidden md:block md:w-64 md:flex-shrink-0 h-full overflow-y-auto border-r border-gray-200 dark:border-gray-700">
             <WorkSidebar
               selectedCompany={selectedCompany}
               onSelectCompany={setSelectedCompany}
             />
           </div>
-          <div className="flex-1 p-4">
+          <div className="flex-1 p-4 overflow-y-auto">
             <div className="md:hidden">
               {workExperiences.map((company) => (
                 <div key={company.company} className="mb-8">

@@ -8,6 +8,8 @@ import Image from "next/image";
 import Modal from "./Modal";
 import DesktopShortcuts from "./DesktopShortcuts";
 
+const profileImage = "/pfp_gif.gif";
+
 const navigationItems = [
   { name: "Bert Selleslagh", href: "/", subtitle: "UX/UI designer" },
   { name: "work", href: "/work" },
@@ -98,7 +100,7 @@ export default function Navigation() {
                         <div className="flex flex-col items-center">
                           <div className="relative w-32 h-32 mb-4 overflow-hidden rounded-full">
                             <Image
-                              src={profileImages[currentImageIndex]}
+                              src={profileImage}
                               alt="Profile"
                               width={128}
                               height={128}

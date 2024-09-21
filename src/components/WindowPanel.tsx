@@ -1,35 +1,33 @@
 import React, { ReactNode, useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { useRouter } from "next/navigation";
-import BackArrow from "./BackArrow";
-import Breadcrumbs from "./Breadcrumbs";
+import { useRouter, usePathname } from "next/navigation";
+import ExplorerHeader from "./ExplorerHeader";
 
 interface WindowPanelProps {
   children: ReactNode;
   title: string;
-  showBackArrow?: boolean;
-  showBreadcrumbs?: boolean;
-  isMaximized?: boolean;
   className?: string;
   onClose?: () => void;
   isDraggable?: boolean;
   zIndex: number;
   onFocus: () => void;
+  showBackArrow?: boolean;
+  showBreadcrumbs?: boolean;
 }
 
 const WindowPanel: React.FC<WindowPanelProps> = ({
   children,
   title,
-  showBackArrow = false,
-  showBreadcrumbs = false,
-  isMaximized = false,
-  className = "",
+  className,
   onClose,
   isDraggable = false,
   zIndex,
   onFocus,
+  showBackArrow = true,
+  showBreadcrumbs = true,
 }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const [isSmallVariant, setIsSmallVariant] = useState(false);
   const [isExiting, setIsExiting] = useState(false);
   const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -101,7 +99,7 @@ const WindowPanel: React.FC<WindowPanelProps> = ({
           animate="animate"
           exit="exit"
           custom={{ isSmallVariant }}
-          className={`bg-gray-200 dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg ${
+          className={`bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg ${
             isSmallVariant ? "w-4/5 max-h-[80vh]" : "w-full max-h-[90vh]"
           } ${className} relative`}
           style={{
@@ -112,7 +110,7 @@ const WindowPanel: React.FC<WindowPanelProps> = ({
           }}
         >
           <div
-            className="flex items-center justify-between p-2 bg-gray-300 dark:bg-gray-700 cursor-move"
+            className="flex items-center justify-between p-2 bg-gray-100 dark:bg-gray-700 cursor-move transition-colors duration-300"
             onMouseDown={handleDragStart}
             onMouseUp={handleDragEnd}
             onMouseLeave={handleDragEnd}
@@ -145,19 +143,17 @@ const WindowPanel: React.FC<WindowPanelProps> = ({
             </div>
             <div className="w-3 h-3"></div>
           </div>
+          <ExplorerHeader
+            title={title}
+            onClose={onClose}
+            showBackArrow={showBackArrow !== false}
+            showBreadcrumbs={showBreadcrumbs !== false}
+          />
           <div
-            className={`p-2 sm:p-4 md:p-6 overflow-auto ${
-              !isSmallVariant ? "h-[calc(100vh-40px)]" : "h-full"
+            className={`overflow-y-auto ${
+              !isSmallVariant ? "h-[calc(100vh-120px)]" : "h-full"
             } relative`}
           >
-            <div className="flex items-center mb-4">
-              {showBackArrow && (
-                <div className="mr-2">
-                  <BackArrow onClose={handleClose} />
-                </div>
-              )}
-              {showBreadcrumbs && <Breadcrumbs />}
-            </div>
             {children}
           </div>
         </motion.div>

@@ -1,5 +1,5 @@
 import { workExperiences } from "@/data/workExperiences";
-import WorkDetailClient from "./WorkDetailClient";
+import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
   const paths = workExperiences.flatMap((company) =>
@@ -11,5 +11,18 @@ export async function generateStaticParams() {
 }
 
 export default function WorkDetail({ params }: { params: { id: string } }) {
-  return <WorkDetailClient params={params} />;
+  const project = workExperiences
+    .flatMap((company) => company.projects)
+    .find((project) => project.id === params.id);
+
+  if (!project) {
+    notFound();
+  }
+
+  return (
+    <div>
+      <h1>{project.title}</h1>
+      {/* Add more project details here */}
+    </div>
+  );
 }

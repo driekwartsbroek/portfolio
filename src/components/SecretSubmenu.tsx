@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import CarGame from "./CarGame";
+import DvdLogo from "./DvdLogo";
 
 interface SecretSubmenuProps {
   onClose: () => void;
@@ -19,17 +20,33 @@ const SecretSubmenu: React.FC<SecretSubmenuProps> = ({
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0 });
   const menuRef = useRef<HTMLDivElement>(null);
   const [isCarGameActive, setIsCarGameActive] = useState(false);
+  const [isDvdLogoActive, setIsDvdLogoActive] = useState(false);
 
   const secretProjects = [
     {
-      name: "Project A",
+      name: "vroom",
       icon: "bi-car-front",
       color: "bg-red-500",
       onClick: () => setIsCarGameActive(true),
     },
-    { name: "Project B", icon: "bi-question", color: "bg-blue-500" },
-    { name: "Project C", icon: "bi-question", color: "bg-green-500" },
-    { name: "Project D", icon: "bi-question", color: "bg-yellow-500" },
+    {
+      name: "screensaver",
+      icon: "bi-disc",
+      color: "bg-blue-500",
+      onClick: () => setIsDvdLogoActive(true),
+    },
+    {
+      name: "Project C",
+      icon: "bi-question",
+      color: "bg-green-500",
+      onClick: () => console.log("Project C clicked"),
+    },
+    {
+      name: "Project D",
+      icon: "bi-question",
+      color: "bg-yellow-500",
+      onClick: () => console.log("Project D clicked"),
+    },
   ];
 
   useEffect(() => {
@@ -76,10 +93,10 @@ const SecretSubmenu: React.FC<SecretSubmenuProps> = ({
           <motion.div
             key={project.name}
             className="flex flex-col items-center"
-            whileHover={index === 0 ? { scale: 1.05 } : {}}
-            whileTap={index === 0 ? { scale: 0.95 } : {}}
-            style={{ cursor: index === 0 ? "pointer" : "default" }}
-            onClick={index === 0 ? project.onClick : undefined}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            style={{ cursor: "pointer" }}
+            onClick={project.onClick}
           >
             <div
               className={`w-14 h-14 ${project.color} rounded-lg mb-2 flex items-center justify-center`}
@@ -91,6 +108,7 @@ const SecretSubmenu: React.FC<SecretSubmenuProps> = ({
         ))}
       </div>
       {isCarGameActive && <CarGame onClose={() => setIsCarGameActive(false)} />}
+      {isDvdLogoActive && <DvdLogo onClose={() => setIsDvdLogoActive(false)} />}
     </motion.div>
   );
 };

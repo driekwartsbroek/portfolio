@@ -14,45 +14,19 @@ const DarkModeToggle = () => {
 
   return (
     <motion.button
-      className="p-2 rounded-full bg-gray-300 dark:bg-gray-700 relative overflow-hidden"
+      className="w-10 h-10 rounded-full bg-transparent border border-gray-300 dark:border-gray-700 flex items-center justify-center relative overflow-hidden"
       onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-      whileHover="hover"
+      whileHover={{ backgroundColor: "rgba(0, 0, 0, 0.05)" }}
+      transition={{ duration: 0.2 }}
     >
-      <motion.div
-        className="absolute inset-0"
-        initial={{ scale: 0 }}
-        variants={{
-          hover: {
-            scale: 2,
-            transition: {
-              type: "spring",
-              stiffness: 300,
-              damping: 20,
-            },
-          },
-        }}
-        style={{
-          background:
-            theme === "dark"
-              ? "radial-gradient(circle, rgba(75,85,99,1) 0%, rgba(31,41,55,0) 70%)"
-              : "radial-gradient(circle, rgba(229,231,235,1) 0%, rgba(229,231,235,0) 70%)",
-        }}
+      <motion.i
+        className={`bi ${
+          theme === "dark" ? "bi-sun" : "bi-moon"
+        } text-xl text-gray-600 dark:text-gray-300`}
+        initial={false}
+        animate={{ rotate: theme === "dark" ? 0 : 180 }}
+        transition={{ duration: 0.3 }}
       />
-      <motion.span
-        className="relative z-10"
-        variants={{
-          hover: {
-            scale: 1.1,
-            transition: {
-              type: "spring",
-              stiffness: 300,
-              damping: 20,
-            },
-          },
-        }}
-      >
-        {theme === "dark" ? "🌞" : "🌛"}
-      </motion.span>
     </motion.button>
   );
 };
